@@ -1,0 +1,215 @@
+.parent-child-data-page {
+    min-height: 100vh;
+    background: #f5f7f4;
+    direction: rtl;
+  }
+  
+  .parent-child-data-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e6eae7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  }
+  
+  .parent-child-data-header-content {
+    max-width: 1000px;
+    min-height: 80px;
+    margin: 0 auto;
+    padding: 0 25px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .parent-child-data-header h1 {
+    margin: 0 0 4px;
+    color: #1d3326;
+    font-size: 24px;
+  }
+  
+  .parent-child-data-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 13px;
+  }
+  
+  .parent-child-data-back {
+    padding: 10px 16px;
+    border: 1px solid #d8ded9;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #1f6f43;
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  .parent-child-data-back:hover {
+    background: #f1f6f2;
+  }
+  
+  .parent-child-data-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 35px 25px 60px;
+    box-sizing: border-box;
+  }
+  
+  .student-profile-card {
+    padding: 30px;
+    margin-bottom: 20px;
+    border: 1px solid #e3e8e4;
+    border-radius: 16px;
+    background: #ffffff;
+    text-align: center;
+  }
+  
+  .student-profile-avatar {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #edf4ef;
+    color: #1f6f43;
+    font-size: 27px;
+    font-weight: bold;
+  }
+  
+  .student-profile-card h2 {
+    margin: 0 0 8px;
+    color: #26382d;
+    font-size: 22px;
+  }
+  
+  .student-profile-username {
+    margin: 0;
+    color: #7a847d;
+    font-size: 13px;
+    direction: ltr;
+  }
+  
+  .student-data-card {
+    overflow: hidden;
+    border: 1px solid #e3e8e4;
+    border-radius: 16px;
+    background: #ffffff;
+  }
+  
+  .student-data-card-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e8ece9;
+  }
+  
+  .student-data-card-header h2 {
+    margin: 0;
+    color: #26382d;
+    font-size: 19px;
+  }
+  
+  .student-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .student-data-item {
+    min-height: 90px;
+    padding: 18px 25px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #edf0ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .student-data-item:nth-child(odd) {
+    border-left: 1px solid #edf0ee;
+  }
+  
+  .student-data-item span {
+    color: #7a847d;
+    font-size: 13px;
+  }
+  
+  .student-data-item strong {
+    color: #26382d;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .student-data-full {
+    grid-column: 1 / -1;
+    border-left: none !important;
+  }
+  
+  .student-data-full strong {
+    direction: ltr;
+    text-align: right;
+  }
+  
+  .student-data-notice {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border: 1px solid #dfe9e2;
+    border-radius: 12px;
+    background: #f1f6f2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .student-data-notice-icon {
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f6f43;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .student-data-notice p {
+    margin: 0;
+    color: #536158;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  
+  @media (max-width: 650px) {
+    .parent-child-data-header-content {
+      padding: 0 15px;
+    }
+  
+    .parent-child-data-content {
+      padding: 25px 15px 40px;
+    }
+  
+    .parent-child-data-header h1 {
+      font-size: 20px;
+    }
+  
+    .parent-child-data-back {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  
+    .student-data-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .student-data-item:nth-child(odd) {
+      border-left: none;
+    }
+  
+    .student-data-full {
+      grid-column: auto;
+    }
+  }
