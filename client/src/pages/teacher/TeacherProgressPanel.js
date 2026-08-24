@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function getTodayDate() {
   const now = new Date();

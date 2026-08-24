@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./TeacherDashboardPage.css";
 import TeacherProgressPanel from "./TeacherProgressPanel";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function getTodayDate() {
   const now = new Date();
