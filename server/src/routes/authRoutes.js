@@ -12,6 +12,7 @@ const JWT_SECRET =
 
 // =====================================================
 // 0. تسجيل دخول مدير النظام
+// حساب واحد فقط من Environment Variables
 // =====================================================
 
 router.post(
@@ -31,53 +32,39 @@ router.post(
         });
       }
 
+      const adminEmail =
+        process.env.ADMIN_EMAIL;
+
+      const adminPassword =
+        process.env.ADMIN_PASSWORD;
+
+      if (!adminEmail || !adminPassword) {
+        console.error(
+          "ADMIN_EMAIL or ADMIN_PASSWORD is missing."
+        );
+
+        return res.status(500).json({
+          success: false,
+          message:
+            "إعدادات حساب الإدارة غير مكتملة."
+        });
+      }
+
       const cleanEmail =
         String(email)
           .trim()
           .toLowerCase();
 
-      const userResult =
-        await pool.query(
-          `
-          SELECT *
-          FROM users
-          WHERE LOWER(TRIM(email)) =
-                LOWER(TRIM($1))
-            AND role = 'admin'
-          LIMIT 1
-          `,
-          [cleanEmail]
-        );
+      const cleanAdminEmail =
+        String(adminEmail)
+          .trim()
+          .toLowerCase();
 
       if (
-        userResult.rows.length === 0
+        cleanEmail !== cleanAdminEmail ||
+        password !== adminPassword
       ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "بيانات دخول الإدارة غير صحيحة."
-        });
-      }
-
-      const user =
-        userResult.rows[0];
-
-      if (!user.is_active) {
-        return res.status(403).json({
-          success: false,
-          message:
-            "حساب الإدارة معطل حاليًا."
-        });
-      }
-
-      const isMatch =
-        await bcrypt.compare(
-          password,
-          user.password_hash
-        );
-
-      if (!isMatch) {
-        return res.status(400).json({
+        return res.status(401).json({
           success: false,
           message:
             "بيانات دخول الإدارة غير صحيحة."
@@ -87,8 +74,8 @@ router.post(
       const token =
         jwt.sign(
           {
-            id: user.id,
-            userId: user.id,
+            id: "admin",
+            userId: "admin",
             role: "admin"
           },
           JWT_SECRET,
@@ -103,9 +90,9 @@ router.post(
           "تم تسجيل دخول الإدارة بنجاح.",
         token,
         user: {
-          id: user.id,
-          email: user.email,
-          role: user.role
+          id: "admin",
+          email: adminEmail,
+          role: "admin"
         }
       });
 
@@ -118,14 +105,11 @@ router.post(
       return res.status(500).json({
         success: false,
         message:
-          "خطأ في الخادم أثناء تسجيل دخول الإدارة.",
-        error:
-          error.message
+          "خطأ في الخادم أثناء تسجيل دخول الإدارة."
       });
     }
   }
 );
-
 
 // =====================================================
 // 1. تسجيل دخول المدرسة
