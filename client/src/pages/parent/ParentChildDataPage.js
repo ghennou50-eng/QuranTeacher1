@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./ParentChildDataPage.css";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function ParentChildDataPage() {
   const { id: studentId } = useParams();

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ParentLoginPage.css";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function ParentLoginPage() {
   const navigate = useNavigate();
