@@ -25,7 +25,10 @@ const storage = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    const extension = path.extname(file.originalname).toLowerCase();
+    const extension =
+      path.extname(
+        file.originalname
+      ).toLowerCase();
 
     const safeName = `${Date.now()}-${Math.round(
       Math.random() * 1000000000
@@ -127,18 +130,21 @@ router.post(
         });
       }
 
-      const existingRequest = await pool.query(
-        `
-        SELECT id
-        FROM school_requests
-        WHERE phone = $1
-          AND status = 'pending'
-        LIMIT 1
-        `,
-        [phone]
-      );
+      const existingRequest =
+        await pool.query(
+          `
+          SELECT id
+          FROM school_requests
+          WHERE phone = $1
+            AND status = 'pending'
+          LIMIT 1
+          `,
+          [phone]
+        );
 
-      if (existingRequest.rows.length > 0) {
+      if (
+        existingRequest.rows.length > 0
+      ) {
         return res.status(409).json({
           success: false,
           message:
@@ -146,17 +152,20 @@ router.post(
         });
       }
 
-      const existingSchool = await pool.query(
-        `
-        SELECT id
-        FROM schools
-        WHERE phone = $1
-        LIMIT 1
-        `,
-        [phone]
-      );
+      const existingSchool =
+        await pool.query(
+          `
+          SELECT id
+          FROM schools
+          WHERE phone = $1
+          LIMIT 1
+          `,
+          [phone]
+        );
 
-      if (existingSchool.rows.length > 0) {
+      if (
+        existingSchool.rows.length > 0
+      ) {
         return res.status(409).json({
           success: false,
           message:
@@ -176,69 +185,73 @@ router.post(
       const outsideImageUrl =
         `/uploads/${outsideImage.filename}`;
 
-      const passwordHash = await bcrypt.hash(
-        password,
-        12
-      );
+      const passwordHash =
+        await bcrypt.hash(
+          password,
+          12
+        );
 
-      const result = await pool.query(
-        `
-        INSERT INTO school_requests (
-          association_name,
-          club_name,
-          phone,
-          wilaya,
-          municipality,
-          district,
-          inside_image_url,
-          outside_image_url,
-          password_hash,
-          status
-        )
-        VALUES (
-          $1,
-          $2,
-          $3,
-          $4,
-          $5,
-          $6,
-          $7,
-          $8,
-          $9,
-          'pending'
-        )
-        RETURNING
-          id,
-          association_name,
-          club_name,
-          phone,
-          wilaya,
-          municipality,
-          district,
-          inside_image_url,
-          outside_image_url,
-          status,
-          created_at
-        `,
-        [
-          associationName,
-          clubName,
-          phone,
-          wilaya,
-          municipality,
-          neighborhood,
-          insideImageUrl,
-          outsideImageUrl,
-          passwordHash
-        ]
-      );
+      const result =
+        await pool.query(
+          `
+          INSERT INTO school_requests (
+            association_name,
+            club_name,
+            phone,
+            wilaya,
+            municipality,
+            district,
+            inside_image_url,
+            outside_image_url,
+            password_hash,
+            status
+          )
+          VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8,
+            $9,
+            'pending'
+          )
+          RETURNING
+            id,
+            association_name,
+            club_name,
+            phone,
+            wilaya,
+            municipality,
+            district,
+            inside_image_url,
+            outside_image_url,
+            status,
+            created_at
+          `,
+          [
+            associationName,
+            clubName,
+            phone,
+            wilaya,
+            municipality,
+            neighborhood,
+            insideImageUrl,
+            outsideImageUrl,
+            passwordHash
+          ]
+        );
 
       return res.status(201).json({
         success: true,
         message:
           "تم إرسال طلب تسجيل المدرسة بنجاح.",
-        request: result.rows[0]
+        request:
+          result.rows[0]
       });
+
     } catch (error) {
       console.error(
         "School registration error:",
@@ -257,46 +270,52 @@ router.post(
 /*
   جلب طلبات المدارس
 */
-router.get("/requests", async (req, res) => {
-  try {
-    const result = await pool.query(
-      `
-      SELECT
-        id,
-        association_name,
-        club_name,
-        phone,
-        wilaya,
-        municipality,
-        district,
-        inside_image_url,
-        outside_image_url,
-        status,
-        created_at,
-        reviewed_at,
-        rejection_reason
-      FROM school_requests
-      ORDER BY created_at DESC
-      `
-    );
+router.get(
+  "/requests",
+  async (req, res) => {
+    try {
+      const result =
+        await pool.query(
+          `
+          SELECT
+            id,
+            association_name,
+            club_name,
+            phone,
+            wilaya,
+            municipality,
+            district,
+            inside_image_url,
+            outside_image_url,
+            status,
+            created_at,
+            reviewed_at,
+            rejection_reason
+          FROM school_requests
+          ORDER BY created_at DESC
+          `
+        );
 
-    return res.status(200).json({
-      success: true,
-      requests: result.rows
-    });
-  } catch (error) {
-    console.error(
-      "Get school requests error:",
-      error
-    );
+      return res.status(200).json({
+        success: true,
+        requests:
+          result.rows
+      });
 
-    return res.status(500).json({
-      success: false,
-      message:
-        "تعذر جلب طلبات المدارس."
-    });
+    } catch (error) {
+      console.error(
+        "Get school requests error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "تعذر جلب طلبات المدارس."
+      });
+    }
   }
-});
+);
 
 /*
   جلب طلب واحد
@@ -305,32 +324,36 @@ router.get(
   "/requests/:id",
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
-      const result = await pool.query(
-        `
-        SELECT
-          id,
-          association_name,
-          club_name,
-          phone,
-          wilaya,
-          municipality,
-          district,
-          inside_image_url,
-          outside_image_url,
-          status,
-          created_at,
-          reviewed_at,
-          rejection_reason
-        FROM school_requests
-        WHERE id = $1
-        LIMIT 1
-        `,
-        [id]
-      );
+      const result =
+        await pool.query(
+          `
+          SELECT
+            id,
+            association_name,
+            club_name,
+            phone,
+            wilaya,
+            municipality,
+            district,
+            inside_image_url,
+            outside_image_url,
+            status,
+            created_at,
+            reviewed_at,
+            rejection_reason
+          FROM school_requests
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [id]
+        );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -340,8 +363,10 @@ router.get(
 
       return res.status(200).json({
         success: true,
-        request: result.rows[0]
+        request:
+          result.rows[0]
       });
+
     } catch (error) {
       console.error(
         "Get school request error:",
@@ -363,25 +388,34 @@ router.get(
 router.post(
   "/requests/:id/approve",
   async (req, res) => {
-    const client = await pool.connect();
+    const client =
+      await pool.connect();
 
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
-      await client.query("BEGIN");
-
-      const requestResult = await client.query(
-        `
-        SELECT *
-        FROM school_requests
-        WHERE id = $1
-        FOR UPDATE
-        `,
-        [id]
+      await client.query(
+        "BEGIN"
       );
 
-      if (requestResult.rows.length === 0) {
-        await client.query("ROLLBACK");
+      const requestResult =
+        await client.query(
+          `
+          SELECT *
+          FROM school_requests
+          WHERE id = $1
+          FOR UPDATE
+          `,
+          [id]
+        );
+
+      if (
+        requestResult.rows.length === 0
+      ) {
+        await client.query(
+          "ROLLBACK"
+        );
 
         return res.status(404).json({
           success: false,
@@ -393,8 +427,13 @@ router.post(
       const request =
         requestResult.rows[0];
 
-      if (request.status !== "pending") {
-        await client.query("ROLLBACK");
+      if (
+        request.status !==
+        "pending"
+      ) {
+        await client.query(
+          "ROLLBACK"
+        );
 
         return res.status(409).json({
           success: false,
@@ -414,8 +453,12 @@ router.post(
           [request.phone]
         );
 
-      if (existingSchool.rows.length > 0) {
-        await client.query("ROLLBACK");
+      if (
+        existingSchool.rows.length > 0
+      ) {
+        await client.query(
+          "ROLLBACK"
+        );
 
         return res.status(409).json({
           success: false,
@@ -502,7 +545,9 @@ router.post(
         [id]
       );
 
-      await client.query("COMMIT");
+      await client.query(
+        "COMMIT"
+      );
 
       return res.status(200).json({
         success: true,
@@ -511,8 +556,11 @@ router.post(
         school:
           schoolResult.rows[0]
       });
+
     } catch (error) {
-      await client.query("ROLLBACK");
+      await client.query(
+        "ROLLBACK"
+      );
 
       console.error(
         "Approve school error:",
@@ -524,6 +572,7 @@ router.post(
         message:
           "حدث خطأ أثناء الموافقة على المدرسة."
       });
+
     } finally {
       client.release();
     }
@@ -537,30 +586,39 @@ router.post(
   "/requests/:id/reject",
   async (req, res) => {
     try {
-      const { id } = req.params;
-      const { reason } = req.body;
+      const { id } =
+        req.params;
 
-      const result = await pool.query(
-        `
-        UPDATE school_requests
-        SET
-          status = 'rejected',
-          reviewed_at =
-            CURRENT_TIMESTAMP,
-          rejection_reason = $2
-        WHERE id = $1
-          AND status = 'pending'
-        RETURNING
-          id,
-          association_name,
-          status,
-          reviewed_at,
-          rejection_reason
-        `,
-        [id, reason || null]
-      );
+      const { reason } =
+        req.body;
 
-      if (result.rows.length === 0) {
+      const result =
+        await pool.query(
+          `
+          UPDATE school_requests
+          SET
+            status = 'rejected',
+            reviewed_at =
+              CURRENT_TIMESTAMP,
+            rejection_reason = $2
+          WHERE id = $1
+            AND status = 'pending'
+          RETURNING
+            id,
+            association_name,
+            status,
+            reviewed_at,
+            rejection_reason
+          `,
+          [
+            id,
+            reason || null
+          ]
+        );
+
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -575,6 +633,7 @@ router.post(
         request:
           result.rows[0]
       });
+
     } catch (error) {
       console.error(
         "Reject school error:",
@@ -589,50 +648,58 @@ router.post(
     }
   }
 );
+
 /*
   جلب المدارس المسجلة
 */
-router.get("/", async (req, res) => {
-  try {
-    const result = await pool.query(
-      `
-      SELECT
-        s.id,
-        s.user_id,
-        s.association_name,
-        s.club_name,
-        s.phone,
-        s.wilaya,
-        s.municipality,
-        s.district,
-        s.inside_image_url,
-        s.outside_image_url,
-        u.is_active,
-        s.created_at
-      FROM schools s
-      LEFT JOIN users u
-        ON u.id = s.user_id
-      ORDER BY s.created_at DESC
-      `
-    );
+router.get(
+  "/",
+  async (req, res) => {
+    try {
+      const result =
+        await pool.query(
+          `
+          SELECT
+            s.id,
+            s.user_id,
+            s.association_name,
+            s.club_name,
+            s.phone,
+            s.wilaya,
+            s.municipality,
+            s.district,
+            s.inside_image_url,
+            s.outside_image_url,
+            u.is_active,
+            s.created_at
+          FROM schools s
+          LEFT JOIN users u
+            ON u.id = s.user_id
+          ORDER BY s.created_at DESC
+          `
+        );
 
-    return res.status(200).json({
-      success: true,
-      schools: result.rows
-    });
-  } catch (error) {
-    console.error(
-      "Get schools error:",
-      error
-    );
+      return res.status(200).json({
+        success: true,
+        schools:
+          result.rows
+      });
 
-    return res.status(500).json({
-      success: false,
-      message:
-        "تعذر جلب المدارس."
-    });
+    } catch (error) {
+      console.error(
+        "Get schools error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "تعذر جلب المدارس."
+      });
+    }
   }
-});
+);
+
 /*
   تعديل معلومات المدرسة
 */
@@ -640,7 +707,8 @@ router.patch(
   "/:id",
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
       const {
         associationName,
@@ -679,7 +747,9 @@ router.patch(
           [id]
         );
 
-      if (schoolResult.rows.length === 0) {
+      if (
+        schoolResult.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -699,10 +769,15 @@ router.patch(
             AND id <> $2
           LIMIT 1
           `,
-          [phone.trim(), id]
+          [
+            phone.trim(),
+            id
+          ]
         );
 
-      if (existingPhone.rows.length > 0) {
+      if (
+        existingPhone.rows.length > 0
+      ) {
         return res.status(409).json({
           success: false,
           message:
@@ -747,8 +822,8 @@ router.patch(
         );
 
       /*
-        تحديث رقم الهاتف في حساب الدخول أيضًا
-        لأن رقم الهاتف هو بيانات الدخول للمدرسة.
+        تحديث رقم الهاتف في حساب المدرسة
+        لأن رقم الهاتف هو بيانات الدخول.
       */
       if (school.user_id) {
         await pool.query(
@@ -795,10 +870,16 @@ router.patch(
   "/:id/status",
   async (req, res) => {
     try {
-      const { id } = req.params;
-      const { isActive } = req.body;
+      const { id } =
+        req.params;
 
-      if (typeof isActive !== "boolean") {
+      const { isActive } =
+        req.body;
+
+      if (
+        typeof isActive !==
+        "boolean"
+      ) {
         return res.status(400).json({
           success: false,
           message:
@@ -806,21 +887,27 @@ router.patch(
         });
       }
 
-      const result = await pool.query(
-        `
-        UPDATE users u
-        SET is_active = $1
-        FROM schools s
-        WHERE s.id = $2
-          AND u.id = s.user_id
-        RETURNING
-          s.id,
-          u.is_active
-        `,
-        [isActive, id]
-      );
+      const result =
+        await pool.query(
+          `
+          UPDATE users u
+          SET is_active = $1
+          FROM schools s
+          WHERE s.id = $2
+            AND u.id = s.user_id
+          RETURNING
+            s.id,
+            u.is_active
+          `,
+          [
+            isActive,
+            id
+          ]
+        );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -835,6 +922,7 @@ router.patch(
         school:
           result.rows[0]
       });
+
     } catch (error) {
       console.error(
         "Update school status error:",
@@ -850,7 +938,6 @@ router.patch(
   }
 );
 
-
 /*
   حذف المدرسة نهائيًا
 */
@@ -861,9 +948,12 @@ router.delete(
       await pool.connect();
 
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
-      await client.query("BEGIN");
+      await client.query(
+        "BEGIN"
+      );
 
       const schoolResult =
         await client.query(
@@ -897,9 +987,6 @@ router.delete(
       const school =
         schoolResult.rows[0];
 
-      /*
-        حذف المدرسة من جدول المدارس
-      */
       await client.query(
         `
         DELETE FROM schools
@@ -908,9 +995,6 @@ router.delete(
         [id]
       );
 
-      /*
-        حذف حساب المستخدم المرتبط
-      */
       if (school.user_id) {
         await client.query(
           `
@@ -921,12 +1005,10 @@ router.delete(
         );
       }
 
-      await client.query("COMMIT");
+      await client.query(
+        "COMMIT"
+      );
 
-      /*
-        حذف صور المدرسة من القرص
-        بعد نجاح حذف البيانات.
-      */
       const deleteImageFile = (
         imageUrl
       ) => {
@@ -935,7 +1017,9 @@ router.delete(
         }
 
         const filename =
-          path.basename(imageUrl);
+          path.basename(
+            imageUrl
+          );
 
         const imagePath =
           path.join(
@@ -944,7 +1028,9 @@ router.delete(
           );
 
         if (
-          fs.existsSync(imagePath)
+          fs.existsSync(
+            imagePath
+          )
         ) {
           try {
             fs.unlinkSync(
@@ -972,6 +1058,7 @@ router.delete(
         message:
           "تم حذف المدرسة وحسابها نهائيًا."
       });
+
     } catch (error) {
       await client.query(
         "ROLLBACK"
@@ -987,11 +1074,13 @@ router.delete(
         message:
           "تعذر حذف المدرسة. قد تكون هناك بيانات مرتبطة بها."
       });
+
     } finally {
       client.release();
     }
   }
-  );
+);
+
 /*
   التعامل مع أخطاء رفع الملفات
 */
@@ -1003,10 +1092,12 @@ router.use(
     next
   ) => {
     if (
-      error instanceof multer.MulterError
+      error instanceof
+      multer.MulterError
     ) {
       if (
-        error.code === "LIMIT_FILE_SIZE"
+        error.code ===
+        "LIMIT_FILE_SIZE"
       ) {
         return res.status(400).json({
           success: false,
