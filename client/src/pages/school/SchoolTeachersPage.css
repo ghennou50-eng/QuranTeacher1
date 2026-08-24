@@ -1,0 +1,435 @@
+.school-teachers-page {
+    min-height: 100vh;
+    background: #f5f7f4;
+    direction: rtl;
+  }
+  
+  .school-teachers-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e3e8e4;
+  }
+  
+  .school-teachers-header-content {
+    max-width: 1100px;
+    min-height: 80px;
+    margin: 0 auto;
+    padding: 0 25px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .school-teachers-header h1 {
+    margin: 0 0 5px;
+    color: #1d3326;
+    font-size: 22px;
+  }
+  
+  .school-teachers-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 12px;
+  }
+  
+  .school-teachers-back {
+    padding: 9px 15px;
+    border: 1px solid #d8dfda;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #536158;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  
+  .school-teachers-back:hover {
+    background: #f3f7f4;
+  }
+  
+  .school-teachers-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 25px 60px;
+    box-sizing: border-box;
+  }
+  
+  .school-teachers-error {
+    margin-bottom: 18px;
+    padding: 13px 16px;
+    border: 1px solid #e6b8b8;
+    border-radius: 10px;
+    background: #fff3f3;
+    color: #a34848;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  
+  .school-teachers-list-card {
+    overflow: hidden;
+    border: 1px solid #e2e8e4;
+    border-radius: 14px;
+    background: #ffffff;
+  }
+  
+  .school-teacher-section-header {
+    padding: 20px 23px;
+    border-bottom: 1px solid #e8ece9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .school-teacher-section-header h2 {
+    margin: 0 0 5px;
+    color: #26382d;
+    font-size: 18px;
+  }
+  
+  .school-teacher-section-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .school-teachers-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .school-teachers-count {
+    padding: 7px 11px;
+    border-radius: 8px;
+    background: #edf4ef;
+    color: #1f6f43;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  
+  .school-teacher-add-button {
+    min-height: 36px;
+    padding: 0 13px;
+    border: none;
+    border-radius: 8px;
+    background: #1f6f43;
+    color: #ffffff;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  
+  .school-teacher-add-button:hover {
+    background: #195b36;
+  }
+  
+  .school-teachers-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .school-teacher-row {
+    padding: 18px 23px;
+    border-bottom: 1px solid #edf0ee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .school-teacher-row:last-child {
+    border-bottom: none;
+  }
+  
+  .school-teacher-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  
+  .school-teacher-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #edf4ef;
+    color: #1f6f43;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .school-teacher-main h3 {
+    margin: 0 0 6px;
+    color: #26382d;
+    font-size: 14px;
+  }
+  
+  .school-teacher-main p {
+    margin: 3px 0;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .school-teacher-main strong {
+    color: #1f6f43;
+    direction: ltr;
+  }
+  
+  .school-teacher-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 7px;
+  }
+  
+  .school-teacher-status {
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 10px;
+  }
+  
+  .school-teacher-status.active {
+    background: #edf4ef;
+    color: #1f6f43;
+  }
+  
+  .school-teacher-status.inactive {
+    background: #f8eeee;
+    color: #a34848;
+  }
+  
+  .school-teacher-action-button,
+  .school-teacher-delete-button {
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 7px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  
+  .school-teacher-action-button {
+    border: 1px solid #d8dfda;
+    background: #ffffff;
+    color: #536158;
+  }
+  
+  .school-teacher-action-button:hover {
+    background: #f3f7f4;
+  }
+  
+  .school-teacher-delete-button {
+    border: 1px solid #d8a4a4;
+    background: #ffffff;
+    color: #a34848;
+  }
+  
+  .school-teacher-delete-button:hover {
+    background: #fff5f5;
+  }
+  
+  .school-teacher-delete-button:disabled,
+  .school-teacher-action-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  
+  .school-teachers-empty {
+    padding: 55px 20px;
+    color: #7a847d;
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .school-teacher-modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(24, 38, 29, 0.48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  
+  .school-teacher-modal {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  }
+  
+  .school-teacher-modal-header {
+    padding: 20px 22px;
+    border-bottom: 1px solid #e8ece9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .school-teacher-modal-header span {
+    color: #7a847d;
+    font-size: 10px;
+  }
+  
+  .school-teacher-modal-header h2 {
+    margin: 5px 0 0;
+    color: #26382d;
+    font-size: 18px;
+  }
+  
+  .school-teacher-modal-header button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #f3f5f3;
+    color: #657169;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .school-teacher-modal-form {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .school-teacher-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  
+  .school-teacher-form-group label {
+    color: #34443a;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .school-teacher-form-group input {
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
+    box-sizing: border-box;
+    border: 1px solid #d8dfda;
+    border-radius: 8px;
+    outline: none;
+    color: #26382d;
+    background: #ffffff;
+    font-size: 13px;
+  }
+  
+  .school-teacher-form-group input:focus {
+    border-color: #1f6f43;
+    box-shadow: 0 0 0 3px rgba(31, 111, 67, 0.08);
+  }
+  
+  .school-teacher-save-button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 8px;
+    background: #1f6f43;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .school-teacher-save-button:hover {
+    background: #195b36;
+  }
+  
+  .school-teacher-save-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+  }
+  
+  .school-teacher-confirm-modal {
+    width: 100%;
+    max-width: 450px;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    background: #ffffff;
+    text-align: center;
+  }
+  
+  .school-teacher-confirm-modal h2 {
+    margin: 0 0 10px;
+    color: #26382d;
+    font-size: 19px;
+  }
+  
+  .school-teacher-confirm-modal p {
+    margin: 8px 0;
+    color: #7a847d;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  
+  .school-teacher-confirm-modal strong {
+    color: #26382d;
+    font-size: 14px;
+  }
+  
+  .school-teacher-delete-warning {
+    margin-top: 15px !important;
+    padding: 11px;
+    border-radius: 8px;
+    background: #fff6f6;
+    color: #a34848 !important;
+  }
+  
+  .school-teacher-confirm-actions {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  @media (max-width: 850px) {
+    .school-teacher-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .school-teacher-actions {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .school-teachers-header-content {
+      padding: 0 15px;
+    }
+  
+    .school-teachers-content {
+      padding: 25px 15px 40px;
+    }
+  
+    .school-teacher-section-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .school-teachers-header-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .school-teacher-actions {
+      justify-content: flex-start;
+    }
+  }

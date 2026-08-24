@@ -1,0 +1,170 @@
+.school-auth-page {
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(31, 122, 87, 0.12),
+        transparent 35%
+      ),
+      #f5f8f6;
+  }
+  
+  .school-auth-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 38px;
+    background: #ffffff;
+    border: 1px solid #e5ebe8;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(20, 70, 50, 0.09);
+  }
+  
+  .school-auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  
+  .school-auth-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #176b4d;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+  }
+  
+  .school-auth-header h1 {
+    margin-bottom: 10px;
+    color: #123c2c;
+    font-size: 30px;
+  }
+  
+  .school-auth-header p {
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  
+  .school-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-group label {
+    color: #344054;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .form-group input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    border: 1px solid #d6ded9;
+    border-radius: 12px;
+    outline: none;
+    background: #ffffff;
+    color: #1f2933;
+    font-size: 15px;
+    direction: rtl;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .form-group input:focus {
+    border-color: #176b4d;
+    box-shadow: 0 0 0 3px rgba(23, 107, 77, 0.1);
+  }
+  
+  .primary-auth-button,
+  .secondary-auth-button {
+    width: 100%;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .primary-auth-button {
+    border: none;
+    background: #176b4d;
+    color: #ffffff;
+    transition: background 0.2s, transform 0.2s;
+  }
+  
+  .primary-auth-button:hover {
+    background: #12563e;
+    transform: translateY(-1px);
+  }
+  
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 25px 0;
+    color: #98a2b3;
+    font-size: 13px;
+  }
+  
+  .auth-divider::before,
+  .auth-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: #e4e7ec;
+  }
+  
+  .secondary-auth-button {
+    border: 1px solid #176b4d;
+    background: #ffffff;
+    color: #176b4d;
+    transition: background 0.2s;
+  }
+  
+  .secondary-auth-button:hover {
+    background: #f0f8f4;
+  }
+  
+  .back-home-link {
+    display: block;
+    margin-top: 22px;
+    text-align: center;
+    color: #667085;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  
+  .back-home-link:hover {
+    color: #176b4d;
+  }
+  
+  @media (max-width: 520px) {
+    .school-auth-card {
+      padding: 28px 20px;
+      border-radius: 20px;
+    }
+  
+    .school-auth-header h1 {
+      font-size: 26px;
+    }
+  }
