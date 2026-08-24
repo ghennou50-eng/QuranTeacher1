@@ -1,14 +1,79 @@
+js
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminLoginPage.css";
 
+const API_URL = "https://quranteacher1.onrender.com/api";
+
 function AdminLoginPage() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Admin login submitted");
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/admin/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "بيانات تسجيل الدخول غير صحيحة."
+        );
+      }
+
+      localStorage.setItem(
+        "quranTeacherAdminToken",
+        data.token
+      );
+
+      localStorage.setItem(
+        "quranTeacherAdmin",
+        JSON.stringify(data.user)
+      );
+
+      localStorage.setItem(
+        "quranTeacherRole",
+        "admin"
+      );
+
+      navigate("/admin");
+
+    } catch (error) {
+      console.error(
+        "Admin login error:",
+        error
+      );
+
+      setError(
+        error.message ||
+          "حدث خطأ أثناء تسجيل الدخول."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,9 +103,12 @@ function AdminLoginPage() {
               id="admin-email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
               placeholder="أدخل البريد الإلكتروني"
               required
+              disabled={loading}
             />
           </div>
 
@@ -53,17 +121,29 @@ function AdminLoginPage() {
               id="admin-password"
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
               placeholder="أدخل كلمة المرور"
               required
+              disabled={loading}
             />
           </div>
+
+          {error && (
+            <div className="admin-login-error">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
             className="admin-login-button"
+            disabled={loading}
           >
-            تسجيل الدخول
+            {loading
+              ? "جاري تسجيل الدخول..."
+              : "تسجيل الدخول"}
           </button>
 
         </form>
@@ -81,3 +161,4 @@ function AdminLoginPage() {
 }
 
 export default AdminLoginPage;
+
