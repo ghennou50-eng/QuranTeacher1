@@ -633,7 +633,160 @@ router.get("/", async (req, res) => {
     });
   }
 });
+/*
+  تعديل معلومات المدرسة
+*/
+router.patch(
+  "/:id",
+  async (req, res) => {
+    try {
+      const { id } = req.params;
 
+      const {
+        associationName,
+        clubName,
+        phone,
+        wilaya,
+        municipality,
+        district
+      } = req.body;
+
+      if (
+        !associationName ||
+        !clubName ||
+        !phone ||
+        !wilaya ||
+        !municipality ||
+        !district
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "يرجى ملء جميع معلومات المدرسة."
+        });
+      }
+
+      const schoolResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            user_id
+          FROM schools
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [id]
+        );
+
+      if (schoolResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "المدرسة غير موجودة."
+        });
+      }
+
+      const school =
+        schoolResult.rows[0];
+
+      const existingPhone =
+        await pool.query(
+          `
+          SELECT id
+          FROM schools
+          WHERE phone = $1
+            AND id <> $2
+          LIMIT 1
+          `,
+          [phone.trim(), id]
+        );
+
+      if (existingPhone.rows.length > 0) {
+        return res.status(409).json({
+          success: false,
+          message:
+            "رقم الهاتف مرتبط بمدرسة أخرى."
+        });
+      }
+
+      const result =
+        await pool.query(
+          `
+          UPDATE schools
+          SET
+            association_name = $1,
+            club_name = $2,
+            phone = $3,
+            wilaya = $4,
+            municipality = $5,
+            district = $6
+          WHERE id = $7
+          RETURNING
+            id,
+            user_id,
+            association_name AS "associationName",
+            club_name AS "clubName",
+            phone,
+            wilaya,
+            municipality,
+            district,
+            inside_image_url AS "insideImageUrl",
+            outside_image_url AS "outsideImageUrl",
+            created_at AS "createdAt"
+          `,
+          [
+            associationName.trim(),
+            clubName.trim(),
+            phone.trim(),
+            wilaya.trim(),
+            municipality.trim(),
+            district.trim(),
+            id
+          ]
+        );
+
+      /*
+        تحديث رقم الهاتف في حساب الدخول أيضًا
+        لأن رقم الهاتف هو بيانات الدخول للمدرسة.
+      */
+      if (school.user_id) {
+        await pool.query(
+          `
+          UPDATE users
+          SET email = $1
+          WHERE id = $2
+            AND role = 'school'
+          `,
+          [
+            phone.trim(),
+            school.user_id
+          ]
+        );
+      }
+
+      return res.status(200).json({
+        success: true,
+        message:
+          "تم تحديث معلومات المدرسة بنجاح.",
+        school:
+          result.rows[0]
+      });
+
+    } catch (error) {
+      console.error(
+        "Update school information error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "تعذر تحديث معلومات المدرسة."
+      });
+    }
+  }
+);
 
 /*
   تغيير حالة المدرسة
