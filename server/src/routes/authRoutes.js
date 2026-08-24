@@ -1,3 +1,4 @@
+js
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -8,6 +9,123 @@ const router = express.Router();
 
 const JWT_SECRET =
   process.env.JWT_SECRET || "secret_key";
+
+
+// =====================================================
+// 0. تسجيل دخول مدير النظام
+// =====================================================
+
+router.post(
+  "/admin/login",
+  async (req, res) => {
+    try {
+      const {
+        email,
+        password
+      } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "يرجى إدخال البريد الإلكتروني وكلمة المرور."
+        });
+      }
+
+      const cleanEmail =
+        String(email)
+          .trim()
+          .toLowerCase();
+
+      const userResult =
+        await pool.query(
+          `
+          SELECT *
+          FROM users
+          WHERE LOWER(TRIM(email)) =
+                LOWER(TRIM($1))
+            AND role = 'admin'
+          LIMIT 1
+          `,
+          [cleanEmail]
+        );
+
+      if (
+        userResult.rows.length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "بيانات دخول الإدارة غير صحيحة."
+        });
+      }
+
+      const user =
+        userResult.rows[0];
+
+      if (!user.is_active) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "حساب الإدارة معطل حاليًا."
+        });
+      }
+
+      const isMatch =
+        await bcrypt.compare(
+          password,
+          user.password_hash
+        );
+
+      if (!isMatch) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "بيانات دخول الإدارة غير صحيحة."
+        });
+      }
+
+      const token =
+        jwt.sign(
+          {
+            id: user.id,
+            userId: user.id,
+            role: "admin"
+          },
+          JWT_SECRET,
+          {
+            expiresIn: "7d"
+          }
+        );
+
+      return res.status(200).json({
+        success: true,
+        message:
+          "تم تسجيل دخول الإدارة بنجاح.",
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role
+        }
+      });
+
+    } catch (error) {
+      console.error(
+        "Admin Login Error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "خطأ في الخادم أثناء تسجيل دخول الإدارة.",
+        error:
+          error.message
+      });
+    }
+  }
+);
 
 
 // =====================================================
@@ -616,7 +734,8 @@ router.post(
           },
           JWT_SECRET,
           {
-            expiresIn: "7d"
+            expiresIn:
+              "7d"
           }
         );
 
@@ -671,3 +790,4 @@ router.post(
 
 
 module.exports = router;
+
