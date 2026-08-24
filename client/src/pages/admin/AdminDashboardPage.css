@@ -1,0 +1,468 @@
+.admin-dashboard-page {
+    min-height: 100vh;
+    background: #f5f7f4;
+    direction: rtl;
+  }
+  
+  .admin-dashboard-header {
+    height: 76px;
+    background: #ffffff;
+    border-bottom: 1px solid #e3e8e4;
+  }
+  
+  .admin-dashboard-header-content {
+    height: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 25px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .admin-dashboard-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .admin-dashboard-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: #1f6f43;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    direction: ltr;
+  }
+  
+  .admin-dashboard-brand h1 {
+    margin: 0 0 3px;
+    color: #1d3326;
+    font-size: 18px;
+  }
+  
+  .admin-dashboard-brand p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .admin-logout-button {
+    padding: 9px 15px;
+    border: 1px solid #d9dfdb;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #536158;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .admin-logout-button:hover {
+    background: #f5f7f4;
+  }
+  
+  .admin-dashboard-layout {
+    max-width: 1250px;
+    min-height: calc(100vh - 76px);
+    margin: 0 auto;
+    display: flex;
+  }
+  
+  .admin-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 25px 15px;
+    box-sizing: border-box;
+    border-left: 1px solid #e3e8e4;
+    background: #ffffff;
+  }
+  
+  .admin-sidebar-item {
+    width: 100%;
+    min-height: 45px;
+    margin-bottom: 7px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #657169;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    text-align: right;
+    cursor: pointer;
+  }
+  
+  .admin-sidebar-item span {
+    width: 25px;
+    text-align: center;
+    font-size: 15px;
+  }
+  
+  .admin-sidebar-item:hover {
+    background: #f3f7f4;
+    color: #1f6f43;
+  }
+  
+  .admin-sidebar-item.active {
+    background: #edf4ef;
+    color: #1f6f43;
+    font-weight: 600;
+  }
+  
+  .admin-dashboard-content {
+    flex: 1;
+    padding: 35px;
+    box-sizing: border-box;
+  }
+  
+  .admin-page-heading {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .admin-page-heading h2 {
+    margin: 0 0 7px;
+    color: #26382d;
+    font-size: 22px;
+  }
+  
+  .admin-page-heading p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 13px;
+  }
+  
+  .admin-count {
+    padding: 8px 13px;
+    border-radius: 8px;
+    background: #edf4ef;
+    color: #1f6f43;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .admin-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+  
+  .admin-request-card {
+    padding: 20px;
+    border: 1px solid #e2e8e4;
+    border-radius: 13px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .admin-request-main {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  
+  .admin-school-icon {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #edf4ef;
+    color: #1f6f43;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    font-weight: bold;
+  }
+  
+  .admin-request-info h3 {
+    margin: 0 0 5px;
+    color: #26382d;
+    font-size: 15px;
+  }
+  
+  .admin-request-info p {
+    margin: 0 0 6px;
+    color: #657169;
+    font-size: 12px;
+  }
+  
+  .admin-request-location {
+    color: #8a938d;
+    font-size: 11px;
+  }
+  
+  .admin-request-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  
+  .admin-request-actions button,
+  .admin-modal-actions button {
+    min-height: 37px;
+    padding: 0 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .admin-view-button {
+    border: 1px solid #d8dfda;
+    background: #ffffff;
+    color: #536158;
+  }
+  
+  .admin-view-button:hover {
+    background: #f5f7f4;
+  }
+  
+  .admin-approve-button {
+    border: 1px solid #1f6f43;
+    background: #1f6f43;
+    color: #ffffff;
+  }
+  
+  .admin-approve-button:hover {
+    background: #195b36;
+  }
+  
+  .admin-reject-button {
+    border: 1px solid #d8a4a4;
+    background: #ffffff;
+    color: #a34848;
+  }
+  
+  .admin-reject-button:hover {
+    background: #fff5f5;
+  }
+  
+  .admin-empty-state {
+    padding: 70px 25px;
+    border: 1px solid #e2e8e4;
+    border-radius: 14px;
+    background: #ffffff;
+    text-align: center;
+  }
+  
+  .admin-empty-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #edf4ef;
+    color: #1f6f43;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  
+  .admin-empty-state h3 {
+    margin: 0 0 7px;
+    color: #26382d;
+    font-size: 17px;
+  }
+  
+  .admin-empty-state p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 12px;
+  }
+  
+  .admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 25px;
+    box-sizing: border-box;
+    background: rgba(24, 38, 29, 0.48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .admin-modal {
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  }
+  
+  .admin-modal-header {
+    padding: 20px 23px;
+    border-bottom: 1px solid #e8ece9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .admin-modal-header h2 {
+    margin: 0 0 5px;
+    color: #26382d;
+    font-size: 18px;
+  }
+  
+  .admin-modal-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .admin-modal-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #f3f5f3;
+    color: #657169;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .admin-modal-body {
+    padding: 23px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .admin-detail-item {
+    padding: 13px;
+    border: 1px solid #e6ebe7;
+    border-radius: 9px;
+    background: #fafcfb;
+  }
+  
+  .admin-detail-item span {
+    display: block;
+    margin-bottom: 6px;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .admin-detail-item strong {
+    color: #26382d;
+    font-size: 13px;
+  }
+  
+  .admin-school-images {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 5px;
+  }
+  
+  .admin-image-placeholder {
+    min-height: 150px;
+    border: 1px dashed #cfd8d2;
+    border-radius: 10px;
+    background: #f5f7f4;
+    color: #8a938d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .admin-modal-actions {
+    padding: 18px 23px;
+    border-top: 1px solid #e8ece9;
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  
+  @media (max-width: 800px) {
+    .admin-dashboard-layout {
+      display: block;
+    }
+  
+    .admin-sidebar {
+      width: 100%;
+      padding: 10px 15px;
+      border-left: none;
+      border-bottom: 1px solid #e3e8e4;
+      display: flex;
+      gap: 7px;
+    }
+  
+    .admin-sidebar-item {
+      width: auto;
+      margin-bottom: 0;
+    }
+  
+    .admin-dashboard-content {
+      padding: 25px 18px;
+    }
+  
+    .admin-request-card {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .admin-request-actions {
+      width: 100%;
+    }
+  
+    .admin-request-actions button {
+      flex: 1;
+    }
+  }
+  
+  @media (max-width: 550px) {
+    .admin-dashboard-header-content {
+      padding: 0 15px;
+    }
+  
+    .admin-dashboard-brand h1 {
+      font-size: 16px;
+    }
+  
+    .admin-logout-button {
+      padding: 8px 10px;
+    }
+  
+    .admin-page-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .admin-modal-body {
+      grid-template-columns: 1fr;
+    }
+  
+    .admin-school-images {
+      grid-template-columns: 1fr;
+    }
+  
+    .admin-modal-actions {
+      flex-direction: column;
+    }
+  
+    .admin-modal-actions button {
+      width: 100%;
+    }
+  }

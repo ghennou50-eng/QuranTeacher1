@@ -1,0 +1,302 @@
+.admin-school-request-page {
+    min-height: 100vh;
+    background: #f5f7f4;
+    direction: rtl;
+  }
+  
+  .admin-school-request-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e3e8e4;
+  }
+  
+  .admin-school-request-header-content {
+    max-width: 1050px;
+    min-height: 80px;
+    margin: 0 auto;
+    padding: 0 25px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .admin-school-request-header h1 {
+    margin: 0 0 5px;
+    color: #1d3326;
+    font-size: 22px;
+  }
+  
+  .admin-school-request-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 12px;
+  }
+  
+  .admin-school-request-back {
+    padding: 9px 15px;
+    border: 1px solid #d8dfda;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #536158;
+    text-decoration: none;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .admin-school-request-back:hover {
+    background: #f3f7f4;
+  }
+  
+  .admin-school-request-content {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 30px 25px 60px;
+    box-sizing: border-box;
+  }
+  
+  .admin-school-request-status {
+    margin-bottom: 18px;
+    padding: 17px 20px;
+    border: 1px solid #eadfbd;
+    border-radius: 12px;
+    background: #fffaf0;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  
+  .admin-school-request-status-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #d6a832;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  .admin-school-request-status strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #5c4a1d;
+    font-size: 13px;
+  }
+  
+  .admin-school-request-status span {
+    color: #897747;
+    font-size: 11px;
+  }
+  
+  .admin-school-request-card {
+    margin-bottom: 18px;
+    overflow: hidden;
+    border: 1px solid #e2e8e4;
+    border-radius: 14px;
+    background: #ffffff;
+  }
+  
+  .admin-school-request-card-header {
+    padding: 20px 23px;
+    border-bottom: 1px solid #e8ece9;
+  }
+  
+  .admin-school-request-card-header h2 {
+    margin: 0 0 5px;
+    color: #26382d;
+    font-size: 17px;
+  }
+  
+  .admin-school-request-card-header p {
+    margin: 0;
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .admin-school-request-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .admin-school-request-item {
+    min-height: 82px;
+    padding: 17px 23px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #edf0ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+  }
+  
+  .admin-school-request-item:nth-child(odd) {
+    border-left: 1px solid #edf0ee;
+  }
+  
+  .admin-school-request-item span {
+    color: #7a847d;
+    font-size: 11px;
+  }
+  
+  .admin-school-request-item strong {
+    color: #26382d;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .ltr-text {
+    direction: ltr;
+    text-align: right;
+  }
+  
+  .admin-school-request-images {
+    padding: 23px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .admin-school-request-image {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .admin-school-request-image-placeholder {
+    min-height: 230px;
+    border: 1px dashed #cbd5ce;
+    border-radius: 11px;
+    background: #f5f7f4;
+    color: #8a938d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .admin-school-request-image span {
+    color: #657169;
+    font-size: 11px;
+    text-align: center;
+  }
+  
+  .admin-school-request-decision {
+    padding: 23px;
+    border: 1px solid #e2e8e4;
+    border-radius: 14px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+  }
+  
+  .admin-school-request-decision h2 {
+    margin: 0 0 6px;
+    color: #26382d;
+    font-size: 17px;
+  }
+  
+  .admin-school-request-decision p {
+    max-width: 600px;
+    margin: 0;
+    color: #7a847d;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  
+  .admin-school-request-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  
+  .admin-school-request-actions button {
+    min-height: 42px;
+    padding: 0 17px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .admin-school-request-reject {
+    border: 1px solid #d8a4a4;
+    background: #ffffff;
+    color: #a34848;
+  }
+  
+  .admin-school-request-reject:hover {
+    background: #fff5f5;
+  }
+  
+  .admin-school-request-approve {
+    border: 1px solid #1f6f43;
+    background: #1f6f43;
+    color: #ffffff;
+  }
+  
+  .admin-school-request-approve:hover {
+    background: #195b36;
+  }
+  
+  @media (max-width: 700px) {
+    .admin-school-request-header-content {
+      padding: 0 15px;
+    }
+  
+    .admin-school-request-content {
+      padding: 22px 15px 40px;
+    }
+  
+    .admin-school-request-header h1 {
+      font-size: 19px;
+    }
+  
+    .admin-school-request-back {
+      padding: 8px 10px;
+      font-size: 11px;
+    }
+  
+    .admin-school-request-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .admin-school-request-item:nth-child(odd) {
+      border-left: none;
+    }
+  
+    .admin-school-request-images {
+      grid-template-columns: 1fr;
+    }
+  
+    .admin-school-request-decision {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .admin-school-request-actions {
+      width: 100%;
+    }
+  
+    .admin-school-request-actions button {
+      flex: 1;
+    }
+  }
+  
+  @media (max-width: 450px) {
+    .admin-school-request-status {
+      align-items: flex-start;
+    }
+  
+    .admin-school-request-actions {
+      flex-direction: column;
+    }
+  
+    .admin-school-request-actions button {
+      width: 100%;
+    }
+  }
