@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./SchoolRegisterPage.css";
 
 const API_URL =
-  "http://localhost:5000/api";
+  "https://quranteacher1.onrender.com/api";
 
 function SchoolRegisterPage() {
   const navigate = useNavigate();
