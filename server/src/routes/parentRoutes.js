@@ -122,11 +122,15 @@ router.post(
         });
       }
 
+
       const parentId =
         await getParentId(req.user);
 
 
+      // =================================================
       // البحث عن الطالب
+      // =================================================
+
       const studentResult =
         await pool.query(
           `
@@ -166,42 +170,55 @@ router.post(
 
 
       // =================================================
-      // التحقق من وجود العلاقة مسبقًا
+      // التحقق من ارتباط الطالب بولي أمر
       //
-      // مهم:
-      // parent_children لا نفترض وجود id فيه.
-      // نستخدم student_id الموجود فعليًا.
+      // الطالب يجب أن يكون مرتبطًا بولي أمر واحد فقط.
       // =================================================
 
-      const relationResult =
+      const existingParentResult =
         await pool.query(
           `
           SELECT
-            student_id
+            parent_id
 
           FROM parent_children
 
           WHERE
-            parent_id = $1
-            AND student_id = $2
+            student_id = $1
 
           LIMIT 1
           `,
-          [
-            parentId,
-            student.id
-          ]
+          [student.id]
         );
 
 
       if (
-        relationResult.rows.length > 0
+        existingParentResult.rows.length > 0
       ) {
 
-        return res.status(400).json({
+        const existingParentId =
+          existingParentResult.rows[0].parent_id;
+
+
+        // الطالب موجود بالفعل عند نفس ولي الأمر
+        if (
+          Number(existingParentId) ===
+          Number(parentId)
+        ) {
+
+          return res.status(400).json({
+            success: false,
+            message:
+              "هذا الطالب مضاف بالفعل إلى قائمة أبنائك."
+          });
+        }
+
+
+        // الطالب مرتبط بولي أمر آخر
+        return res.status(409).json({
           success: false,
           message:
-            "هذا الطالب مضاف بالفعل إلى قائمة أبنائك."
+            "هذا الطالب مرتبط بالفعل بحساب ولي أمر آخر."
         });
       }
 
@@ -210,26 +227,50 @@ router.post(
       // إنشاء العلاقة
       // =================================================
 
-      await pool.query(
-        `
-        INSERT INTO parent_children
-          (
-            parent_id,
-            student_id
-          )
+      try {
 
-        VALUES
-          (
-            $1,
-            $2
-          )
-        `,
-        [
-          parentId,
-          student.id
-        ]
-      );
+        await pool.query(
+          `
+          INSERT INTO parent_children
+            (
+              parent_id,
+              student_id
+            )
 
+          VALUES
+            (
+              $1,
+              $2
+            )
+          `,
+          [
+            parentId,
+            student.id
+          ]
+        );
+
+      } catch (insertError) {
+
+        // حماية إضافية في حالة وجود
+        // قيد UNIQUE في قاعدة البيانات
+        if (
+          insertError.code === "23505"
+        ) {
+
+          return res.status(409).json({
+            success: false,
+            message:
+              "هذا الطالب مرتبط بالفعل بحساب ولي أمر آخر."
+          });
+        }
+
+        throw insertError;
+      }
+
+
+      // =================================================
+      // نجاح الإضافة
+      // =================================================
 
       return res.status(201).json({
 
