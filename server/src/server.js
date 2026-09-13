@@ -87,9 +87,14 @@ app.get("/api/health", async (req, res) => {
    Automatic School Approval
    ========================= */
 
+let autoApprovalEnabled = true;
 let autoApprovalRunning = false;
 
 const autoApprovePendingSchool = async () => {
+  if (!autoApprovalEnabled) {
+    return;
+  }
+
   if (autoApprovalRunning) {
     return;
   }
@@ -232,6 +237,47 @@ const autoApprovePendingSchool = async () => {
     autoApprovalRunning = false;
   }
 };
+
+/* =========================
+   Auto Approval Control API
+   ========================= */
+
+app.get(
+  "/api/schools/auto-approval",
+  (req, res) => {
+    res.json({
+      success: true,
+      enabled: autoApprovalEnabled
+    });
+  }
+);
+
+app.post(
+  "/api/schools/auto-approval",
+  (req, res) => {
+    const { enabled } = req.body;
+
+    if (typeof enabled !== "boolean") {
+      return res.status(400).json({
+        success: false,
+        message: "enabled must be boolean"
+      });
+    }
+
+    autoApprovalEnabled = enabled;
+
+    console.log(
+      `Automatic school approval ${
+        enabled ? "ENABLED" : "DISABLED"
+      }`
+    );
+
+    return res.json({
+      success: true,
+      enabled: autoApprovalEnabled
+    });
+  }
+);
 
 const autoApprovalInterval = setInterval(
   autoApprovePendingSchool,
