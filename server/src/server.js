@@ -19,10 +19,6 @@ const app = express();
 
 const PORT = Number(process.env.PORT) || 5000;
 
-/* =========================
-   Environment Variables
-========================= */
-
 if (!process.env.DATABASE_URL) {
   throw new Error(
     "DATABASE_URL is missing from the server environment."
@@ -34,10 +30,6 @@ if (!process.env.JWT_SECRET) {
     "JWT_SECRET is missing from the server environment."
   );
 }
-
-/* =========================
-   Middleware
-========================= */
 
 app.use(
   cors({
@@ -58,20 +50,12 @@ app.use(
   })
 );
 
-/* =========================
-   Uploaded Files
-========================= */
-
 app.use(
   "/uploads",
   express.static(
     path.join(__dirname, "../uploads")
   )
 );
-
-/* =========================
-   Health Check
-========================= */
 
 app.get("/api/health", async (req, res) => {
   try {
@@ -100,8 +84,161 @@ app.get("/api/health", async (req, res) => {
 });
 
 /* =========================
-   API Routes
-========================= */
+   Automatic School Approval
+   ========================= */
+
+let autoApprovalRunning = false;
+
+const autoApprovePendingSchool = async () => {
+  if (autoApprovalRunning) {
+    return;
+  }
+
+  autoApprovalRunning = true;
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const requestResult = await client.query(
+      `
+      SELECT *
+      FROM school_requests
+      WHERE status = 'pending'
+      ORDER BY created_at ASC
+      LIMIT 1
+      FOR UPDATE SKIP LOCKED
+      `
+    );
+
+    if (requestResult.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return;
+    }
+
+    const request = requestResult.rows[0];
+
+    const existingSchool = await client.query(
+      `
+      SELECT id
+      FROM schools
+      WHERE phone = $1
+      LIMIT 1
+      `,
+      [request.phone]
+    );
+
+    if (existingSchool.rows.length > 0) {
+      await client.query("ROLLBACK");
+      return;
+    }
+
+    const userResult = await client.query(
+      `
+      INSERT INTO users (
+        email,
+        password_hash,
+        role,
+        is_active
+      )
+      VALUES (
+        $1,
+        $2,
+        'school',
+        TRUE
+      )
+      RETURNING id
+      `,
+      [
+        request.phone,
+        request.password_hash
+      ]
+    );
+
+    const userId = userResult.rows[0].id;
+
+    await client.query(
+      `
+      INSERT INTO schools (
+        user_id,
+        association_name,
+        club_name,
+        phone,
+        wilaya,
+        municipality,
+        district,
+        inside_image_url,
+        outside_image_url
+      )
+      VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9
+      )
+      `,
+      [
+        userId,
+        request.association_name,
+        request.club_name,
+        request.phone,
+        request.wilaya,
+        request.municipality,
+        request.district,
+        request.inside_image_url,
+        request.outside_image_url
+      ]
+    );
+
+    await client.query(
+      `
+      UPDATE school_requests
+      SET
+        status = 'approved',
+        reviewed_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+        AND status = 'pending'
+      `,
+      [request.id]
+    );
+
+    await client.query("COMMIT");
+
+    console.log(
+      `Automatically approved school request ${request.id}`
+    );
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch (rollbackError) {
+      console.error(
+        "Automatic approval rollback error:",
+        rollbackError
+      );
+    }
+
+    console.error(
+      "Automatic school approval error:",
+      error
+    );
+  } finally {
+    client.release();
+    autoApprovalRunning = false;
+  }
+};
+
+const autoApprovalInterval = setInterval(
+  autoApprovePendingSchool,
+  5000
+);
+
+void autoApprovePendingSchool();
 
 app.use(
   "/api/schools",
@@ -138,20 +275,12 @@ app.use(
   parentRoutes
 );
 
-/* =========================
-   404 Handler
-========================= */
-
 app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "المسار المطلوب غير موجود."
   });
 });
-
-/* =========================
-   Error Handler
-========================= */
 
 app.use(
   (error, req, res, next) => {
@@ -167,10 +296,6 @@ app.use(
   }
 );
 
-/* =========================
-   Start Server
-========================= */
-
 const server = app.listen(
   PORT,
   () => {
@@ -183,14 +308,12 @@ const server = app.listen(
   }
 );
 
-/* =========================
-   Graceful Shutdown
-========================= */
-
 const shutdown = async () => {
   console.log(
     "Shutting down server..."
   );
+
+  clearInterval(autoApprovalInterval);
 
   try {
     await pool.end();
