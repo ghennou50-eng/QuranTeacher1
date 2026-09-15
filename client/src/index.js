@@ -28,6 +28,7 @@ import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminSchoolRequestPage from "./pages/admin/AdminSchoolRequestPage";
 import AdminSchoolsPage from "./pages/admin/AdminSchoolsPage";
+import ProtectedAdminRoute from "./pages/admin/ProtectedAdminRoute";
 
 import "./styles/global.css";
 
@@ -37,111 +38,63 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
 
-        <Route
-          path="/school/login"
-          element={<SchoolLoginPage />}
-        />
+        <Route path="/school/login" element={<SchoolLoginPage />} />
+        <Route path="/school/register" element={<SchoolRegisterPage />} />
+        <Route path="/school/dashboard" element={<SchoolDashboardPage />} />
+        <Route path="/school/teachers" element={<SchoolTeachersPage />} />
+        <Route path="/school/students" element={<SchoolStudentsPage />} />
 
-        <Route
-          path="/school/register"
-          element={<SchoolRegisterPage />}
-        />
+        <Route path="/teacher/login" element={<TeacherLoginPage />} />
+        <Route path="/teacher/dashboard" element={<TeacherDashboardPage />} />
 
-        <Route
-          path="/school/dashboard"
-          element={<SchoolDashboardPage />}
-        />
+        <Route path="/parent/login" element={<ParentLoginPage />} />
+        <Route path="/parent/register" element={<ParentRegisterPage />} />
+        <Route path="/parent/dashboard" element={<ParentDashboardPage />} />
+        <Route path="/parent/child/:id/data" element={<ParentChildDataPage />} />
+        <Route path="/parent/child/:id/progress" element={<ParentChildProgressPage />} />
 
-        <Route
-          path="/school/teachers"
-          element={<SchoolTeachersPage />}
-        />
-
-        <Route
-          path="/school/students"
-          element={<SchoolStudentsPage />}
-        />
-
-        <Route
-          path="/teacher/login"
-          element={<TeacherLoginPage />}
-        />
-
-        <Route
-          path="/teacher/dashboard"
-          element={<TeacherDashboardPage />}
-        />
-
-        <Route
-          path="/parent/login"
-          element={<ParentLoginPage />}
-        />
-
-        <Route
-          path="/parent/register"
-          element={<ParentRegisterPage />}
-        />
-
-        <Route
-          path="/parent/dashboard"
-          element={<ParentDashboardPage />}
-        />
-
-        <Route
-          path="/parent/child/:id/data"
-          element={<ParentChildDataPage />}
-        />
-
-        <Route
-          path="/parent/child/:id/progress"
-          element={<ParentChildProgressPage />}
-        />
-
-        <Route
-          path="/admin/login"
-          element={<AdminLoginPage />}
-        />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
 
         <Route
           path="/admin"
-          element={<AdminDashboardPage />}
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardPage />
+            </ProtectedAdminRoute>
+          }
         />
 
         <Route
           path="/admin/school/request"
-          element={<AdminSchoolRequestPage />}
+          element={
+            <ProtectedAdminRoute>
+              <AdminSchoolRequestPage />
+            </ProtectedAdminRoute>
+          }
         />
 
         <Route
           path="/admin/schools"
-          element={<AdminSchoolsPage />}
-        />
-
-        <Route
-          path="*"
           element={
-            <Navigate
-              to="/"
-              replace
-            />
+            <ProtectedAdminRoute>
+              <AdminSchoolsPage />
+            </ProtectedAdminRoute>
           }
         />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-const rootElement =
-  document.getElementById("root");
+const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-  throw new Error(
-    "لم يتم العثور على عنصر root في ملف HTML."
-  );
+  throw new Error("لم يتم العثور على عنصر root في ملف HTML.");
 }
 
-const root =
-  createRoot(rootElement);
+const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
