@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboardPage.css";
 
-const API_URL = "https://quranteacher1-1.onrender.com/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function AdminDashboardPage() {
   const navigate = useNavigate();
