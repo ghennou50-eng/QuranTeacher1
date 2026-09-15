@@ -3,6 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 
+dotenv.config();
+
 const schoolRoutes = require("./routes/schoolRoutes");
 const authRoutes = require("./routes/authRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
@@ -13,8 +15,6 @@ const parentRoutes = require("./routes/parentRoutes");
 const { requireAuth, requireRole } = require("./middleware/authMiddleware");
 
 const pool = require("./database");
-
-dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -71,9 +71,10 @@ const autoApprovePendingSchool = async () => {
   if (!autoApprovalEnabled || autoApprovalRunning) return;
 
   autoApprovalRunning = true;
-  const client = await pool.connect();
+  let client;
 
   try {
+    client = await pool.connect();
     await client.query("BEGIN");
 
     const requestResult = await client.query(`
@@ -169,14 +170,18 @@ const autoApprovePendingSchool = async () => {
     await client.query("COMMIT");
     console.log(`Automatically approved school request ${request.id}`);
   } catch (error) {
-    try {
-      await client.query("ROLLBACK");
-    } catch (rollbackError) {
-      console.error("Automatic approval rollback error:", rollbackError);
+    if (client) {
+      try {
+        await client.query("ROLLBACK");
+      } catch (rollbackError) {
+        console.error("Automatic approval rollback error:", rollbackError);
+      }
     }
     console.error("Automatic school approval error:", error);
   } finally {
-    client.release();
+    if (client) {
+      client.release();
+    }
     autoApprovalRunning = false;
   }
 };
