@@ -19,14 +19,36 @@ function AdminLoginPage() {
     try {
       const response = await fetch(`${API_URL}/auth/admin/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
         body: JSON.stringify({ email, password })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data = null;
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "بيانات تسجيل الدخول غير صحيحة.");
+      if (responseText.trim()) {
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error("Admin login invalid JSON response:", responseText);
+          throw new Error(
+            `الخادم أعاد استجابة غير صالحة (${response.status}). حاول بعد قليل.`
+          );
+        }
+      }
+
+      if (!response.ok || !data?.success) {
+        throw new Error(
+          data?.message ||
+            `تعذر تسجيل الدخول إلى الخادم (${response.status}).`
+        );
+      }
+
+      if (!data.token || !data.user) {
+        throw new Error("الخادم لم يُرجع بيانات تسجيل الدخول كاملة.");
       }
 
       localStorage.setItem("quranTeacherAdminToken", data.token);
@@ -36,7 +58,14 @@ function AdminLoginPage() {
       navigate("/admin", { replace: true });
     } catch (error) {
       console.error("Admin login error:", error);
-      setError(error.message || "حدث خطأ أثناء تسجيل الدخول.");
+
+      if (error instanceof TypeError) {
+        setError(
+          "تعذر الاتصال بالخادم. تأكد من أن Render يعمل ثم حاول مرة أخرى."
+        );
+      } else {
+        setError(error.message || "حدث خطأ أثناء تسجيل الدخول.");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,17 +83,37 @@ function AdminLoginPage() {
         <form className="admin-login-form" onSubmit={handleSubmit}>
           <div className="admin-login-field">
             <label htmlFor="admin-email">البريد الإلكتروني</label>
-            <input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="أدخل البريد الإلكتروني" required disabled={loading} />
+            <input
+              id="admin-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="أدخل البريد الإلكتروني"
+              required
+              disabled={loading}
+            />
           </div>
 
           <div className="admin-login-field">
             <label htmlFor="admin-password">كلمة المرور</label>
-            <input id="admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="أدخل كلمة المرور" required disabled={loading} />
+            <input
+              id="admin-password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="أدخل كلمة المرور"
+              required
+              disabled={loading}
+            />
           </div>
 
           {error && <div className="admin-login-error">{error}</div>}
 
-          <button type="submit" className="admin-login-button" disabled={loading}>
+          <button
+            type="submit"
+            className="admin-login-button"
+            disabled={loading}
+          >
             {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
           </button>
         </form>
