@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminLoginPage.css";
 
-const API_URL = "https://quranteacher1-1.onrender.com/api";
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function AdminLoginPage() {
   const navigate = useNavigate();
@@ -33,7 +33,11 @@ function AdminLoginPage() {
         try {
           data = JSON.parse(responseText);
         } catch (parseError) {
-          console.error("Admin login invalid JSON response:", responseText);
+          console.error(
+            "Admin login invalid JSON response:",
+            responseText
+          );
+
           throw new Error(
             `الخادم أعاد استجابة غير صالحة (${response.status}). حاول بعد قليل.`
           );
@@ -48,23 +52,42 @@ function AdminLoginPage() {
       }
 
       if (!data.token || !data.user) {
-        throw new Error("الخادم لم يُرجع بيانات تسجيل الدخول كاملة.");
+        throw new Error(
+          "الخادم لم يُرجع بيانات تسجيل الدخول كاملة."
+        );
       }
 
-      localStorage.setItem("quranTeacherAdminToken", data.token);
-      localStorage.setItem("quranTeacherAdmin", JSON.stringify(data.user));
-      localStorage.setItem("quranTeacherRole", "admin");
+      localStorage.setItem(
+        "quranTeacherAdminToken",
+        data.token
+      );
+
+      localStorage.setItem(
+        "quranTeacherAdmin",
+        JSON.stringify(data.user)
+      );
+
+      localStorage.setItem(
+        "quranTeacherRole",
+        "admin"
+      );
 
       navigate("/admin", { replace: true });
     } catch (error) {
-      console.error("Admin login error:", error);
+      console.error(
+        "Admin login error:",
+        error
+      );
 
       if (error instanceof TypeError) {
         setError(
           "تعذر الاتصال بالخادم. تأكد من أن Render يعمل ثم حاول مرة أخرى."
         );
       } else {
-        setError(error.message || "حدث خطأ أثناء تسجيل الدخول.");
+        setError(
+          error.message ||
+            "حدث خطأ أثناء تسجيل الدخول."
+        );
       }
     } finally {
       setLoading(false);
@@ -74,20 +97,31 @@ function AdminLoginPage() {
   return (
     <main className="admin-login-page">
       <div className="admin-login-card">
-        <div className="admin-login-logo">QT</div>
+        <div className="admin-login-logo">
+          QT
+        </div>
+
         <div className="admin-login-heading">
           <h1>إدارة التطبيق</h1>
           <p>تسجيل دخول مسير النظام</p>
         </div>
 
-        <form className="admin-login-form" onSubmit={handleSubmit}>
+        <form
+          className="admin-login-form"
+          onSubmit={handleSubmit}
+        >
           <div className="admin-login-field">
-            <label htmlFor="admin-email">البريد الإلكتروني</label>
+            <label htmlFor="admin-email">
+              البريد الإلكتروني
+            </label>
+
             <input
               id="admin-email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
               placeholder="أدخل البريد الإلكتروني"
               required
               disabled={loading}
@@ -95,32 +129,46 @@ function AdminLoginPage() {
           </div>
 
           <div className="admin-login-field">
-            <label htmlFor="admin-password">كلمة المرور</label>
+            <label htmlFor="admin-password">
+              كلمة المرور
+            </label>
+
             <input
               id="admin-password"
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
               placeholder="أدخل كلمة المرور"
               required
               disabled={loading}
             />
           </div>
 
-          {error && <div className="admin-login-error">{error}</div>}
+          {error && (
+            <div className="admin-login-error">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
             className="admin-login-button"
             disabled={loading}
           >
-            {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
+            {loading
+              ? "جاري تسجيل الدخول..."
+              : "تسجيل الدخول"}
           </button>
         </form>
 
         <div className="admin-login-security">
           <span>i</span>
-          <p>هذه الصفحة مخصصة لمسير التطبيق فقط.</p>
+
+          <p>
+            هذه الصفحة مخصصة لمسير التطبيق فقط.
+          </p>
         </div>
       </div>
     </main>
