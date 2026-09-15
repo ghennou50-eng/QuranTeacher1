@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./AdminSchoolRequestPage.css";
+
+const API_URL = "https://quranteacher1.onrender.com/api";
 
 function AdminSchoolRequestPage() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const request = location.state?.request || {
     id: 1,
@@ -22,14 +27,146 @@ function AdminSchoolRequestPage() {
     status: "pending"
   };
 
-  const handleApprove = () => {
-    console.log("School request approved:", request);
-    navigate("/admin");
+  const getAdminToken = () => {
+    return localStorage.getItem("quranTeacherAdminToken");
   };
 
-  const handleReject = () => {
-    console.log("School request rejected:", request);
-    navigate("/admin");
+  const handleApprove = async () => {
+    if (loading) return;
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const token = getAdminToken();
+
+      if (!token) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      const response = await fetch(
+        `${API_URL}/schools/requests/${request.id}/approve`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      const responseText = await response.text();
+
+      let data = null;
+
+      if (responseText.trim()) {
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error(
+            "Approve request invalid JSON response:",
+            responseText
+          );
+        }
+      }
+
+      if (response.status === 401) {
+        localStorage.removeItem("quranTeacherAdminToken");
+        localStorage.removeItem("quranTeacherAdmin");
+        localStorage.removeItem("quranTeacherRole");
+
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      if (!response.ok || !data?.success) {
+        throw new Error(
+          data?.message ||
+            `تعذر الموافقة على الطلب (${response.status}).`
+        );
+      }
+
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      console.error("Approve school request error:", error);
+
+      setError(
+        error.message ||
+          "حدث خطأ أثناء الموافقة على الطلب."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (loading) return;
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const token = getAdminToken();
+
+      if (!token) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      const response = await fetch(
+        `${API_URL}/schools/requests/${request.id}/reject`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      const responseText = await response.text();
+
+      let data = null;
+
+      if (responseText.trim()) {
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error(
+            "Reject request invalid JSON response:",
+            responseText
+          );
+        }
+      }
+
+      if (response.status === 401) {
+        localStorage.removeItem("quranTeacherAdminToken");
+        localStorage.removeItem("quranTeacherAdmin");
+        localStorage.removeItem("quranTeacherRole");
+
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      if (!response.ok || !data?.success) {
+        throw new Error(
+          data?.message ||
+            `تعذر رفض الطلب (${response.status}).`
+        );
+      }
+
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      console.error("Reject school request error:", error);
+
+      setError(
+        error.message ||
+          "حدث خطأ أثناء رفض الطلب."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,6 +191,21 @@ function AdminSchoolRequestPage() {
       </header>
 
       <section className="admin-school-request-content">
+
+        {error && (
+          <div
+            style={{
+              marginBottom: "20px",
+              padding: "14px",
+              borderRadius: "10px",
+              background: "#ffe5e5",
+              color: "#b00020",
+              textAlign: "center"
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <div className="admin-school-request-status">
           <div className="admin-school-request-status-icon">
@@ -197,16 +349,18 @@ function AdminSchoolRequestPage() {
               type="button"
               className="admin-school-request-reject"
               onClick={handleReject}
+              disabled={loading}
             >
-              رفض الطلب
+              {loading ? "جاري المعالجة..." : "رفض الطلب"}
             </button>
 
             <button
               type="button"
               className="admin-school-request-approve"
               onClick={handleApprove}
+              disabled={loading}
             >
-              الموافقة على المدرسة
+              {loading ? "جاري المعالجة..." : "الموافقة على المدرسة"}
             </button>
 
           </div>
