@@ -248,13 +248,16 @@ function AdminDashboardPage() {
             "School requests invalid JSON:",
             responseText
           );
+          throw new Error(
+            `تعذر قراءة طلبات المدارس من الخادم (استجابة غير صالحة، HTTP ${response.status}).`
+          );
         }
       }
 
-      if (!response.ok) {
+      if (!response.ok || !result?.success) {
         throw new Error(
           result?.message ||
-            "تعذر جلب طلبات المدارس."
+            `تعذر جلب طلبات المدارس (HTTP ${response.status}).`
         );
       }
 
@@ -282,9 +285,8 @@ function AdminDashboardPage() {
         for (const request of newRequests) {
           showNewSchoolNotification(request);
 
-          if (autoApproveRef.current) {
-            await approveAutomatically(request);
-          }
+          // The backend is the single authority for automatic approval.
+          // The dashboard only notifies about newly received requests.
         }
       }
 
