@@ -4,6 +4,19 @@ import "./AdminSchoolsPage.css";
 
 const API_URL = "https://quranteacher1.onrender.com/api";
 
+const readJsonResponse = async (response) => {
+  const responseText = await response.text();
+
+  try {
+    return responseText.trim() ? JSON.parse(responseText) : {};
+  } catch (error) {
+    console.error("Admin schools received a non-JSON response:", responseText);
+    throw new Error(
+      `استجابة غير صالحة من الخادم (HTTP ${response.status}). تحقق من اتصال واجهة الإدارة بالخادم.`
+    );
+  }
+};
+
 function AdminSchoolsPage() {
   const [search, setSearch] = useState("");
   const [schools, setSchools] = useState([]);
@@ -36,7 +49,7 @@ function AdminSchoolsPage() {
       setError("");
       const response = await fetch(`${API_URL}/schools`, { headers: getHeaders() });
       if (handleUnauthorized(response)) return;
-      const result = await response.json();
+      const result = await readJsonResponse(response);
       if (!response.ok) throw new Error(result.message || "تعذر جلب قائمة المدارس.");
       setSchools(Array.isArray(result.schools) ? result.schools : []);
     } catch (error) {
@@ -61,7 +74,7 @@ function AdminSchoolsPage() {
         body: JSON.stringify({ isActive: !school.is_active })
       });
       if (handleUnauthorized(response)) return;
-      const result = await response.json();
+      const result = await readJsonResponse(response);
       if (!response.ok) throw new Error(result.message || "تعذر تغيير حالة المدرسة.");
       setSchools((current) => current.map((item) => item.id === school.id ? { ...item, is_active: result.school.is_active } : item));
     } catch (error) {
@@ -82,7 +95,7 @@ function AdminSchoolsPage() {
         headers: getHeaders()
       });
       if (handleUnauthorized(response)) return;
-      const result = await response.json();
+      const result = await readJsonResponse(response);
       if (!response.ok) throw new Error(result.message || "تعذر حذف المدرسة.");
       setSchools((current) => current.filter((item) => item.id !== school.id));
     } catch (error) {
