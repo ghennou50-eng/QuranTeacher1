@@ -1,6 +1,9 @@
 name: Admin recovery frontend build
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - fix/admin-dashboard-recovery
