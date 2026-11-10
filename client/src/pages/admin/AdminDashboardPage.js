@@ -285,8 +285,9 @@ function AdminDashboardPage() {
         for (const request of newRequests) {
           showNewSchoolNotification(request);
 
-          // The backend is the single authority for automatic approval.
-          // The dashboard only notifies about newly received requests.
+          if (autoApproveRef.current) {
+            await approveAutomatically(request);
+          }
         }
       }
 
